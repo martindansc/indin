@@ -1,0 +1,33 @@
+[
+    {
+        "person_0" : {
+            "gender" : "Female",
+            "section" : "Female",
+            "distance" : 1,
+            "area" : 3,
+            "positionx" : 1,
+            "positiony" : 2,
+            "time" : 1
+        },
+
+        "person_1" : {
+            "gender" : "Male",
+            "section" : "Female",
+            "distance" : 0.5,
+            "area" : 1,
+            "positionx" : 1.5,
+            "positiony" : 2.5,
+            "time" : 1
+        },
+
+        "person_2" : {
+            "gender" : "Male",
+            "section" : "Child",
+            "distance" : 2.3,
+            "area" : 3,
+            "positionx" : 0.2,
+            "positiony" : 3,
+            "time" : 1
+        }
+    }
+]
