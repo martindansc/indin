@@ -28,10 +28,10 @@ class ChatConsumer(WebsocketConsumer):
                     "section" : data["section"],
                     "velocity" : data["distance"]/(time + 1),
                     "distance" : data["gender"],
-                    "area" : data["area"],
+                    "surface" : data["area"],
                     "positionx" : data["positionx"],
                     "positiony" : data["positiony"],
-                    "percentatge" : percentatge,
+                    "percentage" : percentatge,
                     "time" : time
                 }
                 li.append(message)
