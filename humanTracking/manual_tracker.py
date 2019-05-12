@@ -96,7 +96,7 @@ while success:
         for new_key, new_value in new_tracked.items():
             if key == new_key:
                 diff = abs(value[2] - new_value[2])
-                if 0.95 > new_value[2]/value[2]:
+                if 0.9 > new_value[2]/value[2]:
                     print("Found difference in " + str(key))
                     new_tracked[new_key][1] = new_value[1] + diff
                     new_tracked[new_key][2] = value[2]
