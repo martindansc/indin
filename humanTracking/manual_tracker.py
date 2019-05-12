@@ -99,7 +99,7 @@ while success:
                 if 0.5 > new_value[2]/value[2]:
                     print("Found difference in " + str(key))
                     new_tracked[new_key][1] = new_value[1] + diff
-                    new_tracked[new_key][2] = value[2] - 10
+                    new_tracked[new_key][2] = value[2]
                 found = True
                 break
         if not found:
