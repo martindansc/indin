@@ -71,7 +71,7 @@ function saveData(){
 
 }
 
-var selected = 1;
+var selected = 0;
 
 function printDetail(id) {
     document.getElementById("gender").innerHTML = data[id].gender;
@@ -82,13 +82,14 @@ function printDetail(id) {
 }
 
 function fillData(){
+
     for(var i = 0; i < data.length; i++) {
         document.getElementById("id" + (i + 1)).innerHTML = data[i].id;
         document.getElementById("percentage" + (i + 1)).innerHTML = Math.round(data[i].percentage * 100) / 100;
 
         for(var j = 0; j < hist.length; j++) {
-            var hist_data = hist[i];
-            drawDot(j, hist_data[i].positionx*canvas.width/4, hist_data[i].positiony*canvas.height/3, 4);
+            var hist_data = hist[j];
+            drawDot(i, hist_data[i].positionx*canvas.width/4, hist_data[i].positiony*canvas.height/3, 4);
         }
 
         drawDot(j, data[i].positionx*canvas.width/4, data[i].positiony*canvas.height/3, 10);
@@ -109,7 +110,8 @@ function hola(){
                 return function() { 
                     var cell = row.getElementsByTagName("td")[0];
                     var id = cell.innerHTML;
-                    var selected = id.split("_")[1];
+                    var selected_id = id.split("_")[1];
+                    selected = selected_id;
                     printDetail(selected);
                 };
             };
@@ -124,7 +126,11 @@ var chatSocket = new WebSocket(
 chatSocket.onmessage = function(e) {
     var updated_data = JSON.parse(e.data);
     console.log(updated_data);
-    data = updated_data;
+    data = new Array();
+    for(var i = 0; i < updated_data.length; i++) {
+        var id = updated_data[i].id.split("_")[1];
+        data[id] = updated_data[i];
+    }
     hist.push(data);
     draw();
     fillData();
