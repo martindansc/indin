@@ -96,10 +96,10 @@ while success:
         for new_key, new_value in new_tracked.items():
             if key == new_key:
                 diff = abs(value[2] - new_value[2])
-                if 0.7 > new_value[2]/value[2]:
+                if 0.5 > new_value[2]/value[2]:
                     print("Found difference in " + str(key))
                     new_tracked[new_key][1] = new_value[1] + diff
-                    new_tracked[new_key][2] = value[2]
+                    new_tracked[new_key][2] = value[2] - 10
                 found = True
                 break
         if not found:
@@ -135,8 +135,7 @@ while success:
                                                   "positiony": c[1],
                                                   "time": count
                                                   }
-
-    if (count == 50):
+    if count == 50:
         break
 
 with open('../data.json', 'w') as outfile:
