@@ -98,15 +98,21 @@ while success:
                 diff = abs(value[2] - new_value[2])
                 if 0.7 > new_value[2]/value[2]:
                     print("Found difference in " + str(key))
-                    new_value[1] = new_value[1] + diff
-                    new_value[2] = value[2]
+                    new_tracked[new_key][1] = new_value[1] + diff
+                    new_tracked[new_key][2] = value[2]
                 found = True
                 break
         if not found:
             new_tracked[key] = value
             print("not found " + str(key) + ' ' + str(new_tracked[key]))
 
+    print('\n' + '-' * 25 + '\n')
+
     tracked = new_tracked.copy()
+
+    for key, value in tracked.items():
+        print(str(key) + ': ' + str(value))
+
     success, image = vidcap.read()
     count += 1
 
@@ -129,6 +135,9 @@ while success:
                                                   "positiony": c[1],
                                                   "time": count
                                                   }
+
+    if (count == 50):
+        break
 
 with open('../data.json', 'w') as outfile:
     json.dump(output_json, outfile)
