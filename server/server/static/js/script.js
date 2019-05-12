@@ -1,10 +1,16 @@
-var data = new Array();
+var data = [];
 data[0]= {};
 data[1]= {};
 data[2]= {};
 
+var hist = [];
+
 var canvas;
 var ctx_i;
+
+var colors = [
+    "blue", "red", "green"
+]
 
 function deleteLine(index) {
     $("#fila" + index).remove();
@@ -17,31 +23,34 @@ function draw(){
         canvas = c;
 
         ctx_i = ctx;
+
+        ctx.clearRect(0, 0, c.width, c.height);
         
         ctx.fillStyle = "#e67300";  
-        ctx.fillRect(100, 75, 200, 70);
-        ctx.clearRect(105, 80, 190, 60);
+        ctx.fillRect(130, 75, 200, 70);
+        ctx.clearRect(135, 80, 190, 60);
         ctx.fillStyle = "#ffbf80";
-        ctx.fillRect(103, 78, 194, 64);
+        ctx.fillRect(133, 78, 194, 64);
 
         ctx.fillStyle = "#e67300";  
-        ctx.fillRect(400, 75, 200, 70);
-        ctx.clearRect(405, 80, 190, 60);
+        ctx.fillRect(430, 75, 200, 70);
+        ctx.clearRect(435, 80, 190, 60);
         ctx.fillStyle = "#ffbf80";
-        ctx.fillRect(403, 78, 194, 64);
+        ctx.fillRect(433, 78, 194, 64);
        
         ctx.fillStyle = "#e67300";  
-        ctx.fillRect(100, 200, 525, 70);
-        ctx.clearRect(105, 205, 515, 60);
+        ctx.fillRect(130, 200, 525, 70);
+        ctx.clearRect(135, 205, 515, 60);
         ctx.fillStyle = "#ffbf80";
-        ctx.fillRect(103, 203, 519, 64);
+        ctx.fillRect(133, 203, 519, 64);
       }
 }
 
-function drawDot(x, y){
+function drawDot(i, x, y, radius){
     ctx_i.beginPath();
-    ctx_i.fillStyle = "#e67300";
-    ctx_i.arc(x, y, 15, 0, 4 * Math.PI, true);
+    ctx_i.fillStyle = colors[i];
+    ctx_i.arc(x, y, radius, 0, 4 * Math.PI, true);
+    ctx_i.fill();
     ctx_i.stroke();
 }
 function saveData(){
@@ -62,21 +71,31 @@ function saveData(){
 
 }
 
+var selected = 1;
+
 function printDetail(id) {
     document.getElementById("gender").innerHTML = data[id].gender;
     document.getElementById("time").innerHTML = data[id].time;
     document.getElementById("section").innerHTML = data[id].section;
-    document.getElementById("distance").innerHTML = data[id].distance;
-    document.getElementById("surface").innerHTML = data[id].surface;
+    document.getElementById("distance").innerHTML = Math.round(data[id].distance * 100) / 100;
+    document.getElementById("surface").innerHTML = Math.round(data[id].surface * 100) / 100;
 }
 
 function fillData(){
     for(var i = 0; i < data.length; i++) {
         document.getElementById("id" + (i + 1)).innerHTML = data[i].id;
-        document.getElementById("percentage" + (i + 1)).innerHTML = data[i].percentage;
-        drawDot(data[i].positionx*canvas.width/4, data[i].positiony*canvas.height/3);
+        document.getElementById("percentage" + (i + 1)).innerHTML = Math.round(data[i].percentage * 100) / 100;
+
+        for(var j = 0; j < hist.length; j++) {
+            var hist_data = hist[i];
+            drawDot(j, hist_data[i].positionx*canvas.width/4, hist_data[i].positiony*canvas.height/3, 4);
+        }
+
+        drawDot(j, data[i].positionx*canvas.width/4, data[i].positiony*canvas.height/3, 10);
+
+        printDetail(selected);
     }
-    
+
 }
 
 function hola(){
@@ -90,7 +109,8 @@ function hola(){
                 return function() { 
                     var cell = row.getElementsByTagName("td")[0];
                     var id = cell.innerHTML;
-                    printDetail(id.split("_")[1]);
+                    var selected = id.split("_")[1];
+                    printDetail(selected);
                 };
             };
         currentRow.onclick = createClickHandler(currentRow);
@@ -105,6 +125,8 @@ chatSocket.onmessage = function(e) {
     var updated_data = JSON.parse(e.data);
     console.log(updated_data);
     data = updated_data;
+    hist.push(data);
+    draw();
     fillData();
 };
 
@@ -112,14 +134,50 @@ chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
 };
 
-var counter = 0;
+var counter = 219;
 var max = 219;
+var minutes;
 
-setInterval(function(){
-    if(counter < max) {
-        chatSocket.send(JSON.stringify({
-            'message': counter
-        }));
-        counter++;
-    }
-}, 50);
+
+function playVideo(id) {
+    var video = document.getElementById(id);
+    video.pause();
+    video.currentTime = 0;
+    video.load();
+    video.play();
+}
+
+function play(){
+    counter = 0;
+    draw();
+
+    hist = [];
+
+    // restart the video
+    playVideo("myVideo");
+    playVideo("myVideo2");
+}
+
+var i = setInterval(function() {
+
+    var video = document.getElementById("myVideo");
+	if(video.readyState > 0) {
+        var minutes = video.duration;
+        
+        setInterval(function(){
+            if(counter < max) {
+                chatSocket.send(JSON.stringify({
+                    'message': counter
+                }));
+                counter++;
+            }
+        }, minutes*1000 / max);
+
+		clearInterval(i);
+	}
+}, 200);
+
+
+function toggle() {
+
+}

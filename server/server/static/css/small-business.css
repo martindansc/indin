@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-small-business/blob/master/LICENSE)
  */
 body {
-  padding-top: 10%;
+  padding-top: 100px;
 }
 .row{
   position: static;
@@ -27,4 +27,25 @@ td, th {
 
 tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+video {
+  object-fit: contain;
+}
+
+#play {
+  height: 40px;
+  padding-top: 8px;
+}
+
+#toggle {
+  margin-left:20px;
+}
+
+#toolbar {
+  padding-bottom: 5px;
+}
+
+.navbar-brand {
+  color: white !important;
 }

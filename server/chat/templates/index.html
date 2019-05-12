@@ -31,54 +31,76 @@
   <div class="container">
 
     <!-- Content Row -->
+    <div id="toolbar" class="row">
+      <img id="play" src="static/image/play.png" onclick="play()" />
+    </div>
     <div class="row">
       <div class="col-xs-5 col-sm-6 col-lg-4">
-        <table id="informationTable"> 
-          <tr>
-            <th>Name</th>
-            <th>Percentage</th>
-          </tr>
-          <tr id="rowOne" onclick="hola()">
-            <td id="id1"></td>
-            <td id="percentage1"></td>
-          </tr>
-          <tr id="rowTwo" onclick="hola()">
-            <td id="id2"></td>
-            <td id="percentage2"></td>
-          </tr>
-          <tr id="rowThree" onclick="hola()">
-            <td id="id3"></td>
-            <td id="percentage3"></td>
-          </tr>
-        </table>
+        <div class="row">
+            <table id="informationTable"> 
+                <tr>
+                  <th>Name</th>
+                  <th>Percentage</th>
+                </tr>
+                <tr id="rowOne" onclick="hola()">
+                  <td id="id1"></td>
+                  <td id="percentage1"></td>
+                  <td style="width:10px;height:10px; background-color:blue"></td>
+                </tr>
+                <tr id="rowTwo" onclick="hola()">
+                  <td id="id2"></td>
+                  <td id="percentage2"></td>
+                  <td style="width:10px;height:10px; background-color:red"></td>
+                </tr>
+                <tr id="rowThree" onclick="hola()">
+                  <td id="id3"></td>
+                  <td id="percentage3"></td>
+                  <td style="width:10px;height:10px; background-color:green"></td>
+                </tr>
+              </table>
+        </div>
+        <div class="row">
+            <video id="myVideo">
+                <source src="static/videos/video.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+        <div class="row">
+            <video id="myVideo2">
+                <source src="static/videos/video.mp4" type="video2/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+       
       </div>
       
       <div class="col-xs-7 col-sm-6 col-lg-8" >
         <canvas id="myCanvas" width="750" height="350" style="background-color:lavender;">
             <script>draw();</script>
         </canvas>
+        <table id="detailTable">
+            <tr>
+              <th>Gender</th>
+              <th>Section</th>
+              <th>Time</th>
+              <th>Total path</th>
+              <th>Invers of locality</th>
+            </tr>
+            <tr>
+              <td id="gender"></td>
+              <td id="section"></td>
+              <td id="time"></td>
+              <td id="distance"></td>
+              <td id="surface"></td>
+            </tr>
+          </table>
         
       </div>
     </div>
     <div class="down">
       <div class="col-xs-12">
 
-        <table id="detailTable">
-          <tr>
-            <th>gender</th>
-            <th>Section</th>
-            <th>Time</th>
-            <th>Distance total recorrida</th>
-            <th>Surface recorrida</th>
-          </tr>
-          <tr>
-            <td id="gender"></td>
-            <td id="section"></td>
-            <td id="time"></td>
-            <td id="distance"></td>
-            <td id="surface"></td>
-          </tr>
-        </table>
+       
 
       </div>
     </div>
