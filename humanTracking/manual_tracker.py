@@ -44,6 +44,9 @@ detector.setModelTypeAsRetinaNet()
 detector.setModelPath(os.path.join(execution_path, "../model/resnet50_coco_best_v2.0.1.h5"))
 detector.loadModel()
 
+cascPath = "face_cascades/haarcascade_frontalface_default.xml"
+faceCascade = cv2.CascadeClassifier(cascPath)
+
 vidcap = cv2.VideoCapture('../video_samples/comedor_3.mp4')
 success, image = vidcap.read()
 count = 0
@@ -56,6 +59,23 @@ output_json = []
 while success:
     print("*"*50)
     print("FRAME: " + str(count))
+
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    faces = faceCascade.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=6,
+        minSize=(20, 20),
+        maxSize=(30, 30),
+        # flags=cv2.cv.CV_HAAR_SCALE_IMAGE
+        flags=0
+    )
+
+    # Draw a rectangle around the faces
+    for (x, y, w, h) in faces:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
     cv2.imwrite("../image_samples/input_frame.jpg", image)
     detections = detector.detectObjectsFromImage(
         input_image=os.path.join(execution_path, "../image_samples/input_frame.jpg"),
@@ -71,7 +91,7 @@ while success:
             #s += abs(value[1] - (person['box_points'][1] + int((person['box_points'][3] - person['box_points'][1])/2)))
             s += abs(value[1] - value[2] - person['box_points'][1])
             s += abs(value[2] - (person['box_points'][3] - person['box_points'][3]))
-            if (s < total or total == -1) and (s < 200):
+            if (s < total or total == -1) and (s < 400):
                 total = s
                 total_id = key
 
@@ -132,8 +152,8 @@ while success:
                                                   "section": section,
                                                   "distance": calc_dist(movement_dict[key]),
                                                   "area": calc_area(movement_dict[key]),
-                                                  "positionx": c[0],
-                                                  "positiony": c[1],
+                                                  "positionx": max(0.1, min(c[0], 3.9)),
+                                                  "positiony": max(0.1, min(c[1], 2.9)),
                                                   "time": count
                                                   }
     if count == 50:
