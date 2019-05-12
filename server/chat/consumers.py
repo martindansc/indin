@@ -20,7 +20,7 @@ class ChatConsumer(WebsocketConsumer):
             datas = json.load(json_file)[num]
 
             for key, data in datas.items():
-                percentatge = fuzzy_classifier.execute(data["gender"], data["section"], (time + 1), data["distance"], data["area"])
+                percentatge = fuzzy_classifier.execute(data["gender"], data["section"], (time + 1), data["distance"] + 0.1, data["area"])
             
                 message = {
                     "id" : key,

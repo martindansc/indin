@@ -113,7 +113,7 @@ chatSocket.onclose = function(e) {
 };
 
 var counter = 0;
-var max = 1;
+var max = 219;
 
 setInterval(function(){
     if(counter < max) {
@@ -122,4 +122,4 @@ setInterval(function(){
         }));
         counter++;
     }
-}, 500);
+}, 50);
