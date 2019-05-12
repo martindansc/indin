@@ -90,7 +90,7 @@ while success:
             s = abs(value[0] - (person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0])/2)))
             #s += abs(value[1] - (person['box_points'][1] + int((person['box_points'][3] - person['box_points'][1])/2)))
             s += abs(value[1] - value[2] - person['box_points'][1])
-            s += abs(value[2] - (person['box_points'][3] - person['box_points'][3]))
+            #s += abs(value[2] - (person['box_points'][3] - person['box_points'][3]))
             if (s < total or total == -1) and (s < 400):
                 total = s
                 total_id = key
