@@ -68,31 +68,38 @@ while success:
         total = -1
         for key, value in tracked.items():
             s = abs(value[0] - (person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0])/2)))
-            s += abs(value[1] - (person['box_points'][1] + int((person['box_points'][3] - person['box_points'][1])/2)))
-            #s += abs(value[1] - person['box_points'][3])
+            #s += abs(value[1] - (person['box_points'][1] + int((person['box_points'][3] - person['box_points'][1])/2)))
+            s += abs(value[1] - person['box_points'][3])
             if (s < total or total == -1) and (s < 200):
                 total = s
                 total_id = key
 
         if total == -1:
-            new_tracked['person_' + str(person_num)] = [person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0])/2), person['box_points'][1] + int((person['box_points'][3] - person['box_points'][1])/2)]
-            #new_tracked['person_' + str(person_num)] = [
-            #    person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0]) / 2),
-            #    person['box_points'][3]]
+            #new_tracked['person_' + str(person_num)] = [person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0])/2), person['box_points'][1] + int((person['box_points'][3] - person['box_points'][1])/2)]
+            new_tracked['person_' + str(person_num)] = [
+                person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0]) / 2),
+                person['box_points'][3],
+                person['box_points'][3] - person['box_points'][1]]
             movement_dict['person_' + str(person_num)] = []
             print('new ' + str(person_num) + ' ' + str(new_tracked['person_' + str(person_num)]))
             person_num += 1
         else:
-            new_tracked[total_id] = [person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0])/2), person['box_points'][1] + int((person['box_points'][3] - person['box_points'][1])/2)]
-            #new_tracked[total_id] = [
-            #    person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0]) / 2),
-            #    person['box_points'][3]]
+            #new_tracked[total_id] = [person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0])/2), person['box_points'][1] + int((person['box_points'][3] - person['box_points'][1])/2)]
+            new_tracked[total_id] = [
+                person['box_points'][0] + int((person['box_points'][2] - person['box_points'][0]) / 2),
+                person['box_points'][3],
+                person['box_points'][3] - person['box_points'][1]]
             print('continue ' + str(total_id) + ' ' + str(new_tracked[total_id]))
 
     for key, value in tracked.items():
         found = False
         for new_key, new_value in new_tracked.items():
             if key == new_key:
+                diff = abs(value[2] - new_value[2])
+                if 0.7 > new_value[2]/value[2]:
+                    print("Found difference in person " + str(key))
+                    new_value[1] = new_value[1] + diff
+                    new_value[2] = value[2]
                 found = True
                 break
         if not found:

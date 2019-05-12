@@ -1,7 +1,7 @@
 import cv2
 
 image_folder = '../image_samples/'
-video_name = '../video_samples/video.avi'
+video_name = '../video_samples/video.mp4'
 
 fps = 25
 
